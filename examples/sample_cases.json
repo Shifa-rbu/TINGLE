@@ -1,0 +1,170 @@
+{
+  "_label": "SYNTHETIC EXAMPLES written for the TINGLE prototype. No real people, companies, messages or links. 'extraction' is a hand-written stand-in for what a model would return, so these run without an API key.",
+  "cases": [
+    {
+      "id": "fake_internship_fee",
+      "title": "Urgent internship registration fee with a short link",
+      "kind": "suspicious",
+      "text": "Congratulations! You are selected for a Data Analyst internship at BrightPath Talent. To reserve your seat, pay a registration fee of ₹699 within 10 minutes. Pay here: https://bit.ly/synthetic-demo-offer",
+      "extraction": {
+        "message_summary": "An internship offer asks for a registration fee within 10 minutes.",
+        "claimed_identity": "BrightPath Talent (unverified)",
+        "requested_action": {"type": "pay", "sender_asks_user": true, "evidence_quote": "pay a registration fee of ₹699"},
+        "signals": [
+          {"type": "urgency", "evidence_quote": "within 10 minutes"},
+          {"type": "advance_fee", "evidence_quote": "pay a registration fee of ₹699"},
+          {"type": "link", "evidence_quote": "https://bit.ly/synthetic-demo-offer"}
+        ],
+        "urls": ["https://bit.ly/synthetic-demo-offer"],
+        "uncertainties": ["The sender's identity has not been verified"],
+        "source": "text"
+      },
+      "expected_state": "PAUSE & VERIFY"
+    },
+    {
+      "id": "otp_request",
+      "title": "Caller-style message asking to read out a code",
+      "kind": "suspicious",
+      "text": "Hello, this is SafeBank support. Your account is under review. Please read out the 6-digit code we just sent to your phone so we can verify you.",
+      "extraction": {
+        "message_summary": "A message claiming to be bank support asks for a code sent to the reader's phone.",
+        "claimed_identity": "SafeBank support (unverified)",
+        "requested_action": {"type": "share_code", "sender_asks_user": true, "evidence_quote": "read out the 6-digit code we just sent to your phone"},
+        "signals": [
+          {"type": "credential_request", "evidence_quote": "read out the 6-digit code we just sent to your phone"}
+        ],
+        "urls": [],
+        "uncertainties": [],
+        "source": "text"
+      },
+      "expected_state": "STOP & VERIFY"
+    },
+    {
+      "id": "remote_access_request",
+      "title": "Helpdesk message asking to install remote-access software",
+      "kind": "suspicious",
+      "text": "IT Helpdesk: Your laptop has a problem. Install the RemoteFix app so our technician can control your screen and repair it.",
+      "extraction": {
+        "message_summary": "A helpdesk message asks the reader to install an app that lets a technician control the screen.",
+        "claimed_identity": "IT Helpdesk (unverified)",
+        "requested_action": {"type": "install_remote_access", "sender_asks_user": true, "evidence_quote": "Install the RemoteFix app so our technician can control your screen"},
+        "signals": [
+          {"type": "remote_access", "evidence_quote": "control your screen"}
+        ],
+        "urls": [],
+        "uncertainties": ["RemoteFix is a made-up app name for this example"],
+        "source": "text"
+      },
+      "expected_state": "STOP & VERIFY"
+    },
+    {
+      "id": "short_link_click",
+      "title": "Parcel message asking to click a short link",
+      "kind": "suspicious",
+      "text": "Your parcel is on hold. Confirm delivery details here: https://tinyurl.com/synthetic-demo-parcel",
+      "extraction": {
+        "message_summary": "A parcel message asks the reader to open a shortened link.",
+        "claimed_identity": null,
+        "requested_action": {"type": "click_link", "sender_asks_user": true, "evidence_quote": "Confirm delivery details here"},
+        "signals": [
+          {"type": "link", "evidence_quote": "https://tinyurl.com/synthetic-demo-parcel"}
+        ],
+        "urls": ["https://tinyurl.com/synthetic-demo-parcel"],
+        "uncertainties": ["No sender or courier is named"],
+        "source": "text"
+      },
+      "expected_state": "PAUSE & VERIFY"
+    },
+    {
+      "id": "campus_quiz_deadline",
+      "title": "Campus event reminder with a deadline",
+      "kind": "benign",
+      "text": "Reminder: Registration for the Science Club quiz closes on Friday at 5 PM. Sign up on the notice board or ask your class representative.",
+      "extraction": {
+        "message_summary": "A club reminder says quiz registration closes on Friday.",
+        "claimed_identity": "Science Club",
+        "requested_action": {"type": "none", "sender_asks_user": false, "evidence_quote": null},
+        "signals": [
+          {"type": "urgency", "evidence_quote": "closes on Friday at 5 PM"}
+        ],
+        "urls": [],
+        "uncertainties": [],
+        "source": "text"
+      },
+      "expected_state": "NO STRONG WARNING SIGNALS FOUND"
+    },
+    {
+      "id": "never_share_otp_notice",
+      "title": "Security notice that says NOT to share an OTP",
+      "kind": "benign",
+      "text": "SafeBank alert: We will never ask you for your OTP. Never share your OTP with anyone, even if they say they are from the bank.",
+      "extraction": {
+        "message_summary": "A bank notice warns the reader never to share their OTP.",
+        "claimed_identity": "SafeBank (unverified)",
+        "requested_action": {"type": "none", "sender_asks_user": false, "evidence_quote": null},
+        "signals": [
+          {"type": "credential_request", "evidence_quote": "Never share your OTP with anyone"}
+        ],
+        "urls": [],
+        "uncertainties": [],
+        "source": "text"
+      },
+      "expected_state": "NO STRONG WARNING SIGNALS FOUND"
+    },
+    {
+      "id": "link_no_request",
+      "title": "Ordinary link with no request",
+      "kind": "benign",
+      "text": "FYI, the workshop slides from yesterday are here: https://slides.example.test/workshop-notes",
+      "extraction": {
+        "message_summary": "A message shares a link to workshop slides.",
+        "claimed_identity": null,
+        "requested_action": {"type": "none", "sender_asks_user": false, "evidence_quote": null},
+        "signals": [
+          {"type": "link", "evidence_quote": "https://slides.example.test/workshop-notes"}
+        ],
+        "urls": ["https://slides.example.test/workshop-notes"],
+        "uncertainties": [],
+        "source": "text"
+      },
+      "expected_state": "NO STRONG WARNING SIGNALS FOUND"
+    },
+    {
+      "id": "fest_ticket_no_pressure",
+      "title": "Fest ticket payment at a desk, no pressure",
+      "kind": "benign",
+      "text": "Cultural fest tickets are ₹200. You can pay at the student desk in the main block during lunch hours.",
+      "extraction": {
+        "message_summary": "A message says fest tickets can be paid for at a student desk.",
+        "claimed_identity": null,
+        "requested_action": {"type": "pay", "sender_asks_user": true, "evidence_quote": "pay at the student desk"},
+        "signals": [
+          {"type": "payment_request", "evidence_quote": "tickets are ₹200"}
+        ],
+        "urls": [],
+        "uncertainties": [],
+        "source": "text"
+      },
+      "expected_state": "NO STRONG WARNING SIGNALS FOUND"
+    },
+    {
+      "id": "exam_fee_deadline_known_false_alarm",
+      "title": "Real-looking exam fee reminder (known false-alarm case)",
+      "kind": "benign",
+      "note": "Known limitation: the rules cannot tell a genuine fee from a fraudulent one. A payment request plus a deadline gives PAUSE & VERIFY, which only means 'check it with the official office'.",
+      "text": "Last date to pay the semester exam fee at the college office is 15 November. Please pay before the deadline.",
+      "extraction": {
+        "message_summary": "A reminder says the semester exam fee must be paid at the college office by 15 November.",
+        "claimed_identity": "College office",
+        "requested_action": {"type": "pay", "sender_asks_user": true, "evidence_quote": "pay the semester exam fee at the college office"},
+        "signals": [
+          {"type": "urgency", "evidence_quote": "Please pay before the deadline"}
+        ],
+        "urls": [],
+        "uncertainties": [],
+        "source": "text"
+      },
+      "expected_state": "PAUSE & VERIFY"
+    }
+  ]
+}

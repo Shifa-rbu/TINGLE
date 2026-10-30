@@ -1,0 +1,6 @@
+streamlit>=1.40
+pydantic>=2.0
+anthropic>=2.0
+pillow>=10.0
+python-dotenv>=1.0
+pytest>=7.0

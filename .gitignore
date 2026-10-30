@@ -1,0 +1,12 @@
+.env
+__pycache__/
+*.pyc
+.pytest_cache/
+venv/
+.venv/
+.env.*
+!.env.example
+/tingle/
+/_hud_backup_*/
+/_gemini_backup_*/
+*.backup*

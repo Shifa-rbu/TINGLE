@@ -1,34 +1,58 @@
-﻿# TINGLE â€” Your Before-You-Tap Spider-Sense
+🕷️ TINGLE — Your Before-You-Tap Spider-Sense
+Project Spider-Sense · GenAI prototype
 
-TINGLE is a Streamlit prototype inspired by Spider-Man's Spider-Sense. It helps students pause before acting on a message that may ask them to pay, click a link, share a code, or install software.
+TINGLE helps students pause before acting on a suspicious or pressuring digital message. It connects what a message claims, what it asks the reader to do, and the evidence that supports a cautious next step.
 
-## How it works
+TINGLE is a verification aid, not a scam oracle. “No strong warning signals found” does not prove that a message is safe.
 
-- In Live mode, the configured Anthropic model extracts claims, requested actions, evidence, URLs, and uncertainties from pasted text or a screenshot.
-- Pydantic validates the model response.
-- TINGLE's Python rulesâ€”not the modelâ€”choose `STOP & VERIFY`, `PAUSE & VERIFY`, or `NO STRONG WARNING SIGNALS FOUND`.
-- The `inspect_url` tool parses URL text locally. It does not open or fetch links.
-- The evidence web connects the claim, signals, requested action, evidence, and safer next step.
+🎯 The problem and solution
+Students can receive messages that pressure them to pay a fee, click a link, share a one-time code, or install software. TINGLE lets a user paste text or submit a PNG/JPG screenshot, then presents evidence and practical verification advice before the user acts.
 
-## Run on Windows
+The Spider-Man theme is part of the workflow: Spider-Sense is the warning before action, while the evidence web connects the claim, signals, requested action, evidence, and safer next step. TINGLE never clicks, pays, blocks, or reports anything for the user.
 
-```powershell
+⚙️ How TINGLE works
+The user pastes message text or uploads a screenshot.
+The model integration requests an extraction of the claim, requested action, signals, quotes, URLs, and uncertainties. The submitted message is treated as untrusted data.
+Pydantic validates the response. The app—not the model—applies the deterministic rules in core/risk_rules.py.
+If requested, tools/inspect_url.py parses a bounded HTTP/HTTPS URL locally. It does not open the link, fetch it, follow redirects, or make a network request.
+The UI displays STOP & VERIFY, PAUSE & VERIFY, or NO STRONG WARNING SIGNALS FOUND, with the evidence web and a safer next step.
+The extraction model does not produce a scam probability or decide the final warning state. A request to share an OTP/password or install remote-access software can trigger STOP & VERIFY; combinations such as a pressured payment can trigger PAUSE & VERIFY. A deadline alone is not enough for the strongest warning.
+
+🧠 GenAI and the current demo setup
+This repository contains an Anthropic-backed Live analysis path in core/model_client.py. Live mode requires ANTHROPIC_API_KEY in a local .env file. No API key is included in this repository.
+
+The synthetic sample mode works without an API key and does not contact an AI provider. If the demo is run without a configured key, its sample output is hand-written—not a live GenAI result. Do not describe a sample-mode run as a live model call.
+
+The Live path supports text and image input, structured extraction, and a constrained native inspect_url tool call. Use Live mode only if you already have authorized API access and understand the provider's usage terms and possible costs. The project does not enable billing or provide free API access.
+
+🚀 Run locally on Windows
+From the project folder:
+
+PowerShell
+
+python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 .\.venv\Scripts\python.exe -m streamlit run app.py
-```
+Without ANTHROPIC_API_KEY, TINGLE opens in sample mode. For optional Live mode, use a local .env based on .env.example; never commit .env or share the key.
 
-Sample mode works without a key and uses synthetic examples. Live mode requires `ANTHROPIC_API_KEY` in a local `.env` file. Do not commit `.env` or share the key.
+Run the tests:
 
-Run tests:
+PowerShell
 
-```powershell
 .\.venv\Scripts\python.exe -m pytest -q
-```
+Report the test result you actually get on the submitted version; this README does not claim a test count.
 
-## Privacy and limitations
+🧪 Demo suggestion
+Use only the synthetic cases in examples/sample_cases.json:
 
-Live analysis sends the submitted text or screenshot to the configured model provider. Do not use real private or sensitive messages in a demo. TINGLE cannot prove a message is fraudulent or safe; â€œNo strong warning signals foundâ€ does not establish that a message is safe.
+Show a sample that asks for an urgent fee and explain the evidence leading to PAUSE & VERIFY.
+Show a benign deadline-only message and explain why a deadline alone is not treated as the strongest warning.
+Show the evidence web and explain that a URL observation is not a verdict and the link is never opened.
+Label sample output clearly as synthetic and offline. Do not submit real private messages or screenshots.
 
-## Demo
-
-Use the clearly labelled synthetic sample cases. Show a warning example and a benign comparison, then explain the evidence web, deterministic rules, and limitations.
+🛡️ Privacy, safety, and limitations
+Live analysis sends the submitted text or screenshot to the configured model provider. Provider terms apply; avoid personal, sensitive, confidential, or identifying content.
+Sample mode uses synthetic data locally and does not make a provider call.
+API credentials belong only in a local .env, which is ignored by Git. Never commit secrets.
+TINGLE is not a live threat-intelligence service. It cannot verify who sent a message, prove fraud, or prove safety.
+The URL tool only inspects URL text; HTTPS alone is not proof that a site is safe.
